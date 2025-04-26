@@ -99,7 +99,5 @@ public class BeerServiceImpl implements BeerService {
         existingBeer.setUpc(beer.getUpc());
         existingBeer.setQuantityOnHand(beer.getQuantityOnHand());
         existingBeer.setUpdateDate(LocalDateTime.now());
-
-        beerMap.put(existingBeer.getId(), existingBeer);
     }
 }
