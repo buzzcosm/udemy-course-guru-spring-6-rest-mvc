@@ -30,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CustomerControllerTest {
 
     public static final String CUSTOMER_PATH = "/api/v1/customers";
+    private static final String CUSTOMER_PATH_ID = CUSTOMER_PATH + "/{customerId}";
+
     @Autowired
     MockMvc mockMvc;
 
@@ -59,7 +61,7 @@ class CustomerControllerTest {
         Map<String, Object> customerMap = new HashMap<>();
         customerMap.put("name", "Updated Name");
 
-        mockMvc.perform(patch(CUSTOMER_PATH + "/" + customer.getId())
+        mockMvc.perform(patch(CUSTOMER_PATH_ID, customer.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customerMap)))
@@ -76,7 +78,7 @@ class CustomerControllerTest {
         Customer customer = customerServiceImpl.getAllCustomers().get(0);
 
         // Write test for Delete of Customer
-        mockMvc.perform(delete(CUSTOMER_PATH + "/" + customer.getId())
+        mockMvc.perform(delete(CUSTOMER_PATH_ID, customer.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent()); // Verify HTTP 204 is returned
 
@@ -91,7 +93,7 @@ class CustomerControllerTest {
     void testUpdateCustomer() throws Exception {
         Customer customer = customerServiceImpl.getAllCustomers().get(0);
 
-        mockMvc.perform(put(CUSTOMER_PATH + "/" + customer.getId())
+        mockMvc.perform(put(CUSTOMER_PATH_ID, customer.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customer)))
@@ -136,7 +138,7 @@ class CustomerControllerTest {
 
         given(customerService.getCustomerById(testCustomer.getId())).willReturn(testCustomer);
 
-        mockMvc.perform(get(CUSTOMER_PATH + "/" + testCustomer.getId())
+        mockMvc.perform(get(CUSTOMER_PATH_ID, testCustomer.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
