@@ -28,7 +28,7 @@ public class BeerController {
 
         beerService.patchBeerById(id, beer);
 
-        return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{beerId}")
