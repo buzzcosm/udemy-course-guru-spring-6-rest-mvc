@@ -20,6 +20,17 @@ public class BeerController {
 
     private final BeerService beerService;
 
+    @PatchMapping("/{beerId}")
+    public ResponseEntity updateBeerPatchById(@PathVariable("beerId") UUID id,
+                                              @RequestBody Beer beer) {
+
+        log.debug("Patch Beer by Id - in controller was called");
+
+        beerService.patchBeerById(id, beer);
+
+        return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);
+    }
+
     @PutMapping("/{beerId}")
     public ResponseEntity updateBeerById(
             @PathVariable("beerId") UUID beerId,
