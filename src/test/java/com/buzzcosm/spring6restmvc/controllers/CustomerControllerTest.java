@@ -6,6 +6,7 @@ import com.buzzcosm.spring6restmvc.services.CustomerServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -39,6 +41,25 @@ class CustomerControllerTest {
     @BeforeEach
     void setUp() {
         customerServiceImpl = new CustomerServiceImpl();
+    }
+
+    @Test
+    void testDeleteCustomer() throws Exception {
+        Customer customer = customerServiceImpl.getAllCustomers().get(0);
+
+        // Write test for Delete of Customer
+        mockMvc.perform(delete(API_V_1_CUSTOMERS + "/" + customer.getId())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent()); // Verify HTTP 204 is returned
+
+        // capture the argument
+        ArgumentCaptor<UUID> customerIdArgumentCaptor = ArgumentCaptor.forClass(UUID.class);
+
+        // make sure the service was called -Verify Mockito Mock delete method is called
+        verify(customerService).deleteCustomerById(customerIdArgumentCaptor.capture());
+
+        // Verify the proper UUID is sent to the delete method using an Argument Captor
+        assertThat(customer.getId()).isEqualTo(customerIdArgumentCaptor.getValue());
     }
 
     @Test
