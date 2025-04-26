@@ -45,6 +45,7 @@ class CustomerControllerTest {
         customer.setVersion(null);
         customer.setId(null);
 
+        // given any customer, when saving a new customer, return the second customer in the list
         given(customerService.saveNewCustomer(any(Customer.class)))
                 .willReturn(customerServiceImpl.getAllCustomers().get(1));
 
