@@ -58,7 +58,7 @@ public class CustomerController {
 
         customerService.patchCustomerById(id, customer);
 
-        return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{customerId}")
