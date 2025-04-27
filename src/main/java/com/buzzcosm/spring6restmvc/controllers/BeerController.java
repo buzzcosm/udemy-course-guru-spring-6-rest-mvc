@@ -28,9 +28,12 @@ public class BeerController {
     @PostMapping(BEER_PATH)
     public ResponseEntity saveNewBeer(@RequestBody BeerDTO beer) {
         log.debug("Save new beer - in controller: {}", beer);
+
         BeerDTO savedBeer = beerService.saveNewBeer(beer);
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
+
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
