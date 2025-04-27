@@ -100,4 +100,11 @@ class BeerControllerIntegrationTest {
         Beer updatedBeer = beerRepository.findById(beer.getId()).get();
         assertThat(updatedBeer.getBeerName()).isEqualTo(beerName);
     }
+
+    @Test
+    void testUpdateBeerNotFound() {
+        assertThrows(NotFoundException.class, () -> {
+            beerController.updateBeerById(UUID.randomUUID(), BeerDTO.builder().build());
+        });
+    }
 }
