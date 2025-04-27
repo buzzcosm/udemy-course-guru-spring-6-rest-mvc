@@ -1,6 +1,6 @@
 package com.buzzcosm.spring6restmvc.controllers;
 
-import com.buzzcosm.spring6restmvc.model.Beer;
+import com.buzzcosm.spring6restmvc.model.BeerDTO;
 import com.buzzcosm.spring6restmvc.services.BeerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +26,9 @@ public class BeerController {
      * Create a new beer
      */
     @PostMapping(BEER_PATH)
-    public ResponseEntity saveNewBeer(@RequestBody Beer beer) {
+    public ResponseEntity saveNewBeer(@RequestBody BeerDTO beer) {
         log.debug("Save new beer - in controller: {}", beer);
-        Beer savedBeer = beerService.saveNewBeer(beer);
+        BeerDTO savedBeer = beerService.saveNewBeer(beer);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
         return new ResponseEntity(headers, HttpStatus.CREATED);
@@ -38,7 +38,7 @@ public class BeerController {
      * Read: Get all beers
      */
     @GetMapping(BEER_PATH)
-    public List<Beer> listBeers() {
+    public List<BeerDTO> listBeers() {
         return beerService.listBeers();
     }
 
@@ -46,7 +46,7 @@ public class BeerController {
      * Read: Get a specific beer by Id
      */
     @GetMapping(BEER_PATH_ID)
-    public Beer getBeerById(@PathVariable("beerId") UUID id) {
+    public BeerDTO getBeerById(@PathVariable("beerId") UUID id) {
         log.debug("Get Beer by Id in controller was called");
         return beerService.getBeerById(id).orElseThrow(NotFoundException::new);
     }
@@ -56,7 +56,7 @@ public class BeerController {
      */
     @PatchMapping(BEER_PATH_ID)
     public ResponseEntity updateBeerPatchById(@PathVariable("beerId") UUID id,
-                                              @RequestBody Beer beer) {
+                                              @RequestBody BeerDTO beer) {
         log.debug("Patch Beer by Id - in controller was called");
         beerService.patchBeerById(id, beer);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -67,7 +67,7 @@ public class BeerController {
      */
     @PutMapping(BEER_PATH_ID)
     public ResponseEntity updateBeerById(@PathVariable("beerId") UUID beerId,
-                                         @RequestBody Beer beer) {
+                                         @RequestBody BeerDTO beer) {
         beerService.updateBeerById(beerId, beer);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
