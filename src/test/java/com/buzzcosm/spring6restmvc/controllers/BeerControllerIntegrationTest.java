@@ -107,4 +107,16 @@ class BeerControllerIntegrationTest {
             beerController.updateBeerById(UUID.randomUUID(), BeerDTO.builder().build());
         });
     }
+
+    @Rollback
+    @Transactional
+    @Test
+    void testDeleteBeerByIdFound() {
+        Beer beer = beerRepository.findAll().get(0);
+
+        ResponseEntity responseEntity = beerController.deleteBeerById(beer.getId());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+
+        assertThat(beerRepository.findById(beer.getId()).isEmpty()).isTrue();
+    }
 }
