@@ -42,7 +42,7 @@ class BeerControllerIntegrationTest {
     }
 
     @Test
-    void testGetById() {
+    void testGetBeerById() {
         Beer beer = beerRepository.findAll().get(0);
         BeerDTO beerDTO = beerController.getBeerById(beer.getId());
 
