@@ -46,7 +46,9 @@ public class CustomerController {
     public ResponseEntity updateCustomerById(@PathVariable("customerId") UUID customerId,
                                              @RequestBody CustomerDTO customer) {
 
-        customerService.updateCustomerById(customerId, customer);
+        if (customerService.updateCustomerById(customerId, customer).isEmpty()) {
+            throw new NotFoundException();
+        }
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -55,7 +57,9 @@ public class CustomerController {
     public ResponseEntity patchCustomerById(@PathVariable("customerId") UUID id,
                                             @RequestBody CustomerDTO customer) {
 
-        customerService.patchCustomerById(id, customer);
+        if (customerService.patchCustomerById(id, customer).isEmpty()) {
+            throw new NotFoundException();
+        }
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -63,7 +67,9 @@ public class CustomerController {
     @DeleteMapping(CUSTOMER_PATH_ID)
     public ResponseEntity deleteCustomerById(@PathVariable("customerId") UUID id) {
 
-        customerService.deleteCustomerById(id);
+        if (!customerService.deleteCustomerById(id)) {
+            throw new NotFoundException();
+        }
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
